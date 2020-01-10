@@ -2,8 +2,6 @@
 
 namespace SpaceSpell\ElasticApmBundle\ContextProvider;
 
-use UserContextProviderInterface;
-
 trait UserContextProviderAwareTrait
 {
     /**
