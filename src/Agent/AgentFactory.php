@@ -3,10 +3,11 @@
 namespace SpaceSpell\ElasticApmBundle\Agent;
 
 use PhilKra\Agent;
+use SpaceSpell\ElasticApmBundle\ContextProvider\SharedContextProviderInterface;
 
 class AgentFactory
 {
-    public static function createAgent(array $config)
+    public static function createAgent(array $config, SharedContextProviderInterface $sharedContextProvider = null)
     {
         $config['active'] = true;
 
@@ -15,6 +16,14 @@ class AgentFactory
             $config['active'] = false;
         }
 
-        return new Agent($config);
+        $sharedContext = [];
+
+        if ($sharedContextProvider instanceof SharedContextProviderInterface) {
+            $sharedContext['user'] = $sharedContextProvider->getUser();
+            $sharedContext['custom'] = $sharedContextProvider->getCustom();
+            $sharedContext['tags'] = $sharedContextProvider->getTags();
+        }
+
+        return new Agent($config, $sharedContext);
     }
 }

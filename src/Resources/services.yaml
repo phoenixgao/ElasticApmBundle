@@ -1,6 +1,58 @@
-elastic_apm.agent:
-    class: PhilKra\Agent
-    factory: ['SpaceSpell\ElasticApmBundle\Agent\AgentFactory', 'createAgent']
-    arguments:
-        - []
-    public: true
+services:
+    elastic_apm.agent:
+        class: PhilKra\Agent
+        factory: ['SpaceSpell\ElasticApmBundle\Agent\AgentFactory', 'createAgent']
+        arguments:
+            - []
+            - '@?elastic_apm.context_provider.shared'
+        public: true
+
+    elastic_apm.listener.request:
+        class: SpaceSpell\ElasticApmBundle\EventListener\RequestListener
+        arguments:
+            - '%elastic_apm.enabled%'
+        calls:
+            - method: setAgent
+              arguments:
+                  - '@elastic_apm.agent'
+            - method: setLogger
+              arguments:
+                  - '@?logger'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 99 }
+
+    elastic_apm.listener.exception:
+        class: SpaceSpell\ElasticApmBundle\EventListener\ExceptionListener
+        arguments:
+            - '%elastic_apm.enabled%'
+        calls:
+            - method: setAgent
+              arguments:
+                  - '@elastic_apm.agent'
+            - method: setLogger
+              arguments:
+                  - '@?logger'
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 100 }
+
+    elastic_apm.listener.terminate:
+        class: SpaceSpell\ElasticApmBundle\EventListener\ApmTransactionSenderListener
+        arguments:
+            - '%elastic_apm.enabled%'
+        calls:
+            - method: setAgent
+              arguments:
+                  - '@elastic_apm.agent'
+            - method: setUserContextProvider
+              arguments:
+                  - '@?elastic_apm.context_provider.user'
+            - method: setLogger
+              arguments:
+                  - '@?logger'
+        tags:
+            - { name: kernel.event_listener, event: kernel.terminate, method: onKernelTerminate, priority: -100 }
+
+    elastic_apm.context_provider.user:
+        class: SpaceSpell\ElasticApmBundle\ContextProvider\UserContextProvider
+        arguments:
+            - '@security.token_storage'

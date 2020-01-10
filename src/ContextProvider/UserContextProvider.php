@@ -5,7 +5,7 @@ namespace SpaceSpell\ElasticApmBundle\ContextProvider;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class UserContextProvider
+class UserContextProvider implements UserContextProviderInterface
 {
     /**
      * @var TokenStorageInterface
@@ -46,7 +46,7 @@ class UserContextProvider
         }
     }
 
-    public function getUserContext()
+    public function getUserContext() : array
     {
         return $this->userContext;
     }
