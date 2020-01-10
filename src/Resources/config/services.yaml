@@ -36,7 +36,7 @@ services:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 100 }
 
     elastic_apm.listener.terminate:
-        class: SpaceSpell\ElasticApmBundle\EventListener\ApmTransactionSenderListener
+        class: SpaceSpell\ElasticApmBundle\EventListener\TerminateListener
         arguments:
             - '%elastic_apm.enabled%'
         calls:
