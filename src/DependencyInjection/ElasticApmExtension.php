@@ -25,7 +25,7 @@ class ElasticApmExtension extends Extension
         $container->setParameter("elastic_apm.enabled", $config['enabled']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
+        $loader->load('services.yaml');
 
         $agentConfig = $config['agent'];
         $elasticApmAgentDefinition = $container->getDefinition('elastic_apm.agent');

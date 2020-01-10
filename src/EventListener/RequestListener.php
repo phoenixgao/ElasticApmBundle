@@ -13,7 +13,7 @@ use SpaceSpell\ElasticApmBundle\Support\RequestConverter;
 
 class RequestListener implements LoggerAwareInterface, AgentAwareInterface
 {
-    use LoggerAwareTrait, AgentAwareTrait, SharedContextProviderAwareTrait;
+    use LoggerAwareTrait, AgentAwareTrait;
 
     protected $enabled = false;
 
