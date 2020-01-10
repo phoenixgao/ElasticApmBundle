@@ -32,16 +32,16 @@ class UserContextProvider implements UserContextProviderInterface
     {
         if ($this->tokenStorage && $token = $this->tokenStorage->getToken()) {
             $user = $token->getUser();
-        }
 
-        if ($user instanceof UserInterface) {
-            $this->userContext['username'] = $user->getUsername();
-            $this->userContext['roles'] = $user->getRoles();
-            if (method_exists($user, 'getId')) {
-                $this->userContext['id'] = $user->getId();
-            }
-            if (method_exists($user, 'getEmail')) {
-                $this->userContext['email'] = $user->getEmail();
+            if ($user instanceof UserInterface) {
+                $this->userContext['username'] = $user->getUsername();
+                $this->userContext['roles'] = $user->getRoles();
+                if (method_exists($user, 'getId')) {
+                    $this->userContext['id'] = $user->getId();
+                }
+                if (method_exists($user, 'getEmail')) {
+                    $this->userContext['email'] = $user->getEmail();
+                }
             }
         }
     }
