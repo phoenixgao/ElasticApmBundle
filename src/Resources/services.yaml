@@ -1,0 +1,6 @@
+elastic_apm.agent:
+    class: PhilKra\Agent
+    factory: ['SpaceSpell\ElasticApmBundle\Agent\AgentFactory', 'createAgent']
+    arguments:
+        - []
+    public: true

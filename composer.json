@@ -1,0 +1,31 @@
+{
+    "name": "spacespell/elastic-apm-bundle",
+    "description": "Elastic APM Bundle",
+    "type": "symfony-bundle",
+    "homepage": "https://github.com/spacespell/ElasticApmBundle",
+    "require": {
+        "symfony/framework-bundle": "^4.0|^5.0",
+        "philkra/elastic-apm-php-agent": "~7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0@dev"
+    },
+    "license": "Apache License 2.0",
+    "authors": [
+        {
+            "name": "Phoenix Gao",
+            "email": "phoenix@spacespell.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "SpaceSpell\\ElasticApmBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SpaceSpell\\Tests\\ElasticApmBundle\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev"
+}
