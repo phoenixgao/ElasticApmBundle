@@ -27,6 +27,5 @@
         "psr-4": {
             "SpaceSpell\\Tests\\ElasticApmBundle\\": "tests/"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
