@@ -12,6 +12,6 @@ class RequestConverter
         $routeName = $request->get('_route');
         $controllerName = $request->get('_controller');
 
-        return sprintf('%s %s (%s)', $method, $controllerName, $routeName);
+        return sprintf('%s (%s)', $controllerName, $routeName);
     }
 }
