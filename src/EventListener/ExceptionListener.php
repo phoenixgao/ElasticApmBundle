@@ -4,6 +4,8 @@ namespace SpaceSpell\ElasticApmBundle\EventListener;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use SpaceSpell\ElasticApmBundle\Agent\AgentAwareInterface;
+use SpaceSpell\ElasticApmBundle\Agent\AgentAwareTrait;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
