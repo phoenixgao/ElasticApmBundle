@@ -15,6 +15,10 @@ class ExceptionListener implements LoggerAwareInterface, AgentAwareInterface
 
     protected $enabled = false;
 
+    protected $exclude = [];
+
+    protected $include = [];
+
     public function __construct($enabled)
     {
         $this->enabled = $enabled;
@@ -27,6 +31,30 @@ class ExceptionListener implements LoggerAwareInterface, AgentAwareInterface
         }
 
         $exception = $event->getException();
+
+        $name = get_class($exception);
+        $match = true;
+        if ($this->include) {
+            $match = false;
+            foreach ($this->include as $pattern) {
+                $this->logger->info($pattern);
+                if (fnmatch($pattern, $name, FNM_NOESCAPE)) {
+                    $match = true;
+                    break;
+                }
+            }
+        } else if ($this->exclude) {
+            foreach ($this->exclude as $pattern) {
+                if (fnmatch($pattern, $name, FNM_NOESCAPE)) {
+                    $match = false;
+                    break;
+                }
+            }
+        }
+
+        if (!$match) {
+            return;
+        }
 
         $this->agent->captureThrowable($exception);
 
@@ -45,5 +73,15 @@ class ExceptionListener implements LoggerAwareInterface, AgentAwareInterface
                 sprintf('APM errors %s: "%s"', $sent ? 'sent' : 'not sent', $exception->getTraceAsString())
             );
         }
+    }
+
+    public function setExclude(array $exclude)
+    {
+        $this->exclude = $exclude;
+    }
+
+    public function setInclude(array $include)
+    {
+        $this->include = $include;
     }
 }

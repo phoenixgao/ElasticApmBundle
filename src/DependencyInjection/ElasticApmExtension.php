@@ -30,5 +30,36 @@ class ElasticApmExtension extends Extension
         $agentConfig = $config['agent'];
         $elasticApmAgentDefinition = $container->getDefinition('elastic_apm.agent');
         $elasticApmAgentDefinition->replaceArgument(0, $agentConfig);
+
+        $requestListenerDefinition = $container->getDefinition('elastic_apm.listener.request');
+        $exceptionListenerDefinition = $container->getDefinition('elastic_apm.listener.exception');
+
+        if ($transactionConfig = $config['transactions']) {
+            if ($transactionConfig['exclude']) {
+                $requestListenerDefinition->addMethodCall('setExclude', [$transactionConfig['exclude']]);
+            }
+
+            if ($transactionConfig['include']) {
+                $requestListenerDefinition->addMethodCall('setInclude', [$transactionConfig['include']]);
+
+                if ($transactionConfig['exclude']) {
+                    @trigger_error('The "transactions.exclude" option is ignored in when "transactions.include" was set.', E_USER_NOTICE);
+                }
+            }
+        }
+
+        if ($exceptionConfig = $config['exceptions']) {
+            if ($exceptionConfig['exclude']) {
+                $exceptionListenerDefinition->addMethodCall('setExclude', [$exceptionConfig['exclude']]);
+            }
+
+            if ($exceptionConfig['include']) {
+                $exceptionListenerDefinition->addMethodCall('setInclude', [$exceptionConfig['include']]);
+
+                if ($exceptionConfig['exclude']) {
+                    @trigger_error('The "exceptions.exclude" option is ignored in when "exceptions.include" was set.', E_USER_NOTICE);
+                }
+            }
+        }
     }
 }
