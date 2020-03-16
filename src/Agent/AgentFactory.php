@@ -12,7 +12,7 @@ class AgentFactory
         $config['active'] = true;
 
         // Check PHP SAPI, if it's cli deactivate APM agent
-        if (PHP_SAPI === 'cli') {
+        if (PHP_SAPI === 'cli' || $config['enabled'] === false) {
             $config['active'] = false;
         }
 
