@@ -28,6 +28,7 @@ class ElasticApmExtension extends Extension
         $loader->load('services.yaml');
 
         $agentConfig = $config['agent'];
+        $agentConfig['enabled'] = $config['enabled'];
         $elasticApmAgentDefinition = $container->getDefinition('elastic_apm.agent');
         $elasticApmAgentDefinition->replaceArgument(0, $agentConfig);
 
